@@ -158,3 +158,15 @@ export const refreshAccessToken = async (refreshToken: string) => {
     throw new HttpError("Refresh token tidak valid atau kadaluwarsa", 403);
   }
 };
+
+export const logoutUser = async (refreshToken: string) => {
+  const user = await findUserByRefreshToken(refreshToken);
+
+  if (!user) throw new HttpError("Refresh token tidak valid", 403);
+
+  try {
+    await updateUser({ email: user.email }, { refreshToken: null });
+  } catch (err) {
+    throw new HttpError("Refresh token tidak valid atau kadaluwarsa", 403);
+  }
+};

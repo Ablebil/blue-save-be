@@ -103,3 +103,15 @@ export const refreshTokenValidation = checkSchema({
     },
   },
 });
+
+export const logoutValidation = checkSchema({
+  refreshToken: {
+    in: ["body"],
+    isString: {
+      errorMessage: "Refresh token harus berupa string",
+    },
+    notEmpty: {
+      errorMessage: "Refresh token tidak boleh kosong",
+    },
+  },
+});

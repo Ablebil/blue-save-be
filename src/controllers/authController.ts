@@ -4,6 +4,7 @@ import {
   verifyOTP,
   loginUser,
   refreshAccessToken,
+  logoutUser,
 } from "../services/authService";
 import { matchedData } from "express-validator/lib";
 
@@ -93,6 +94,22 @@ export const refreshTokenHandler = async (
     res
       .status(200)
       .json({ accessToken: newAccessToken, refreshToken: newRefreshToken });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const logout = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { refreshToken } = matchedData(req);
+
+    await logoutUser(refreshToken);
+
+    res.status(200).json({ message: "Logout berhasil" });
   } catch (err) {
     next(err);
   }

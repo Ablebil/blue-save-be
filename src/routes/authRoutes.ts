@@ -6,12 +6,14 @@ import {
   login,
   googleAuthCallback,
   refreshTokenHandler,
+  logout,
 } from "../controllers/authController";
 import {
   registerValidation,
   verifyOTPValidation,
   loginValidation,
   refreshTokenValidation,
+  logoutValidation,
 } from "../validators/authValidator";
 import { validationResultHandler } from "../middlewares/validationResultHandler";
 
@@ -39,6 +41,13 @@ router.get(
   googleAuthCallback
 );
 
-router.post("/refresh-token", refreshTokenValidation, refreshTokenHandler);
+router.post(
+  "/refresh-token",
+  refreshTokenValidation,
+  validationResultHandler,
+  refreshTokenHandler
+);
+
+router.post("/logout", logoutValidation, validationResultHandler, logout);
 
 export default router;
