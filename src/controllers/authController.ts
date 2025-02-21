@@ -5,6 +5,7 @@ import {
   loginUser,
   refreshAccessToken,
 } from "../services/authService";
+import { matchedData } from "express-validator/lib";
 
 export const register = async (
   req: Request,
@@ -12,7 +13,7 @@ export const register = async (
   next: NextFunction
 ) => {
   try {
-    const { email, password, name } = req.body;
+    const { email, password, name } = matchedData(req);
     const otp = await registerUser(email, password, name);
     res.status(201).json({ message: "OTP telah dikirim ke email" });
   } catch (err) {
@@ -26,7 +27,7 @@ export const verify = async (
   next: NextFunction
 ) => {
   try {
-    const { email, otp } = req.body;
+    const { email, otp } = matchedData(req);
     const { accessToken, refreshToken } = await verifyOTP(email, otp);
     res.status(200).json({
       message: "Verifikasi berhasil",
@@ -44,7 +45,7 @@ export const login = async (
   next: NextFunction
 ) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = matchedData(req);
     const { accessToken, refreshToken } = await loginUser(email, password);
     res.status(200).json({
       message: "Berhasil login",
@@ -86,7 +87,7 @@ export const refreshTokenHandler = async (
   next: NextFunction
 ) => {
   try {
-    const { refreshToken } = req.body;
+    const { refreshToken } = matchedData(req);
     const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
       await refreshAccessToken(refreshToken);
     res

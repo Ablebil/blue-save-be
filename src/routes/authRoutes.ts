@@ -11,6 +11,7 @@ import {
   registerValidation,
   verifyOTPValidation,
   loginValidation,
+  refreshTokenValidation,
 } from "../validators/authValidator";
 import { validationResultHandler } from "../middlewares/validationResultHandler";
 
@@ -38,6 +39,6 @@ router.get(
   googleAuthCallback
 );
 
-router.post("/refresh-token", refreshTokenHandler);
+router.post("/refresh-token", refreshTokenValidation, refreshTokenHandler);
 
 export default router;
