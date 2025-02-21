@@ -6,6 +6,8 @@ import morgan from "morgan";
 import prisma from "./config/database";
 import routes from "./routes/routes";
 import { errorHandler } from "./middlewares/errorHandler";
+import passport from "passport";
+import "./config/passport";
 
 dotenv.config();
 const app = express();
@@ -13,6 +15,7 @@ const app = express();
 app.use(cors());
 app.use(helmet());
 app.use(morgan("dev"));
+app.use(passport.initialize());
 app.use(express.json());
 
 app.use("/api/v1", routes);

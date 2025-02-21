@@ -7,6 +7,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Dummy {
-  id Int @id @default(autoincrement())
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  password     String?
+  name         String
+  googleId     String?   @unique
+  otp          String?
+  otpExpiresAt DateTime?
+  refreshToken String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }
