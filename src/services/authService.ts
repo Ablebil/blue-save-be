@@ -97,12 +97,8 @@ export const verifyOTP = async (email: string, otp: string) => {
 
 export const loginUser = async (email: string, password: string) => {
   const user = await findUserByEmail(email);
-  if (
-    !user ||
-    !user.password ||
-    !(await bcrypt.compare(password, user.password))
-  ) {
-    throw new HttpError("Email atau password salah", 401);
+  if (!user || !(await bcrypt.compare(password, user.password as string))) {
+    throw new HttpError("Password salah", 401);
   }
 
   const refreshToken = generateRefreshToken(user.id);

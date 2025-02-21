@@ -7,14 +7,25 @@ import {
   googleAuthCallback,
   refreshTokenHandler,
 } from "../controllers/authController";
+import {
+  registerValidation,
+  verifyOTPValidation,
+  loginValidation,
+} from "../validators/authValidator";
+import { validationResultHandler } from "../middlewares/validationResultHandler";
 
 const router = Router();
 
-router.post("/register", register);
+router.post("/register", registerValidation, validationResultHandler, register);
 
-router.post("/verify-otp", verify);
+router.post(
+  "/verify-otp",
+  verifyOTPValidation,
+  validationResultHandler,
+  verify
+);
 
-router.post("/login", login);
+router.post("/login", loginValidation, validationResultHandler, login);
 
 router.get(
   "/google",
