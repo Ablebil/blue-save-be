@@ -20,20 +20,25 @@ export const authenticateGoogleUser = async (profile: any) => {
 
   let user = await findUserByGoogleId(profile.id);
 
-  if (user) {
-    if (!user.googleId) {
+  if (!user) {
+    user = await findUserByEmail(email);
+
+    if (user) {
+      console.log(
+        "User ditemukan dengan email yang sama, menambahkan Google ID"
+      );
       user = await updateUser({ email }, { googleId: profile.id });
+    } else {
+      console.log("User tidak ditemukan, membuat akun baru dengan Google");
+      user = await createUser({
+        googleId: profile.id,
+        email,
+        name: profile.displayName,
+      });
     }
-  } else {
-    user = await createUser({
-      googleId: profile.id,
-      email,
-      name: profile.displayName,
-    });
   }
 
   const refreshToken = generateRefreshToken(user!.id);
-
   await updateUser({ id: user!.id }, { refreshToken });
 
   return {
@@ -48,13 +53,36 @@ export const registerUser = async (
   password: string,
   name: string
 ) => {
-  const existingUser = await findUserByEmail(email);
-  if (existingUser) throw new HttpError("Email sudah terdaftar", 409);
+  let user = await findUserByEmail(email);
+
+  if (user && user.googleId && !user.password) {
+    console.log(
+      "User telah mendaftar dengan Google, menambahkan password dan OTP"
+    );
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const otp = generateOTP();
+
+    user = await updateUser(
+      { email },
+      {
+        password: hashedPassword,
+        otp,
+        otpExpiresAt: new Date(Date.now() + 5 * 60 * 1000),
+      }
+    );
+
+    await sendOTPEmail(email, otp);
+
+    return { message: "OTP telah dikirim ke email" };
+  }
+
+  if (user) throw new HttpError("Email sudah terdaftar", 409);
 
   const hashedPassword = await bcrypt.hash(password, 10);
   const otp = generateOTP();
 
-  const user = await createUser({
+  user = await createUser({
     email,
     password: hashedPassword,
     name,
