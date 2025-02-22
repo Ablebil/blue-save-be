@@ -16,6 +16,7 @@ import {
   logoutValidation,
 } from "../validators/authValidator";
 import { validationResultHandler } from "../middlewares/validationResultHandler";
+import { otpLimiter } from "../middlewares/rateLimiter";
 
 const router = Router();
 
@@ -23,6 +24,7 @@ router.post("/register", registerValidation, validationResultHandler, register);
 
 router.post(
   "/verify-otp",
+  otpLimiter,
   verifyOTPValidation,
   validationResultHandler,
   verify
