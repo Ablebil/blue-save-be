@@ -16,6 +16,13 @@ model User {
   otp          String?   @db.Char(6)
   otpExpiresAt DateTime?
   refreshToken String?   @db.VarChar(255)
+  role         Role      @default(USER)
+  verified     Boolean   @default(false)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+}
+
+enum Role {
+  USER
+  ADMIN
 }

@@ -14,6 +14,7 @@ import {
 } from "../utils/jwt";
 import { sendOTPEmail } from "../utils/email";
 import HttpError from "../utils/HttpError";
+import { Role } from "../types";
 
 export const authenticateGoogleUser = async (profile: any) => {
   const email = profile.emails?.[0]?.value!;
@@ -27,13 +28,23 @@ export const authenticateGoogleUser = async (profile: any) => {
       console.log(
         "User ditemukan dengan email yang sama, menambahkan Google ID"
       );
-      user = await updateUser({ email }, { googleId: profile.id });
+
+      if (!user.verified) {
+        user = await updateUser(
+          { email },
+          { googleId: profile.id, verified: true }
+        );
+      } else {
+        user = await updateUser({ email }, { googleId: profile.id });
+      }
     } else {
       console.log("User tidak ditemukan, membuat akun baru dengan Google");
       user = await createUser({
         googleId: profile.id,
         email,
         name: profile.displayName,
+        role: Role.USER,
+        verified: true,
       });
     }
   }
@@ -88,6 +99,7 @@ export const registerUser = async (
     name,
     otp,
     otpExpiresAt: new Date(Date.now() + 5 * 60 * 1000),
+    role: Role.USER,
   });
 
   await sendOTPEmail(email, otp);
@@ -114,6 +126,7 @@ export const verifyOTP = async (email: string, otp: string) => {
       otp: null,
       otpExpiresAt: null,
       refreshToken,
+      verified: true,
     }
   );
 
@@ -129,9 +142,10 @@ export const loginUser = async (
   rememberMe: boolean = false
 ) => {
   const user = await findUserByEmail(email);
-  if (!user || !(await bcrypt.compare(password, user.password as string))) {
+  if (!user) throw new HttpError("User tidak ditemukan", 404);
+  if (!(await bcrypt.compare(password, user.password as string)))
     throw new HttpError("Password salah", 401);
-  }
+  if (!user.verified) throw new HttpError("Akun beblum diverifikasi", 403);
 
   const refreshToken = generateRefreshToken(user.id, rememberMe);
 
