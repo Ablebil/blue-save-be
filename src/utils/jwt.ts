@@ -6,9 +6,13 @@ export const generateAccessToken = (userId: string) => {
   });
 };
 
-export const generateRefreshToken = (userId: string) => {
+export const generateRefreshToken = (
+  userId: string,
+  rememberMe: boolean = false
+) => {
+  const expiresIn = rememberMe ? "30d" : "7d";
   return jwt.sign({ id: userId }, process.env.JWT_REFRESH_SECRET!, {
-    expiresIn: "7d",
+    expiresIn,
   });
 };
 

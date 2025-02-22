@@ -14,7 +14,11 @@ export const register = async (
   next: NextFunction
 ) => {
   try {
-    const { email, password, name } = matchedData(req);
+    const { email, password } = matchedData(req);
+    const name = email
+      .substring(0, email.length - 10)
+      .replace(/^./, (c: string) => c.toUpperCase());
+    console.log(name);
     const otp = await registerUser(email, password, name);
     res.status(201).json({ message: "OTP telah dikirim ke email" });
   } catch (err) {
@@ -46,8 +50,12 @@ export const login = async (
   next: NextFunction
 ) => {
   try {
-    const { email, password } = matchedData(req);
-    const { accessToken, refreshToken } = await loginUser(email, password);
+    const { email, password, rememberMe } = matchedData(req);
+    const { accessToken, refreshToken } = await loginUser(
+      email,
+      password,
+      rememberMe
+    );
     res.status(200).json({
       message: "Berhasil login",
       accessToken,

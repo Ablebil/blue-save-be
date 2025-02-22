@@ -26,20 +26,6 @@ export const registerValidation = checkSchema({
         "Password harus berisi minimal satu huruf kecil, satu huruf kapital, satu angka, dan satu karakter spesial",
     },
   },
-  name: {
-    in: ["body"],
-    isString: {
-      errorMessage: "Nama harus berupa string",
-    },
-    notEmpty: {
-      errorMessage: "Nama tidak boleh kosong",
-    },
-    trim: true,
-    isLength: {
-      options: { min: 4, max: 50 },
-      errorMessage: "Nama harus antara 4-50 karakter",
-    },
-  },
 });
 
 export const verifyOTPValidation = checkSchema({
@@ -88,6 +74,13 @@ export const loginValidation = checkSchema({
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/,
       errorMessage:
         "Password harus berisi minimal satu huruf kecil, satu huruf kapital, satu angka, dan satu karakter spesial",
+    },
+  },
+  rememberMe: {
+    in: ["body"],
+    optional: true,
+    isBoolean: {
+      errorMessage: "Remember me harus berupa boolean",
     },
   },
 });
