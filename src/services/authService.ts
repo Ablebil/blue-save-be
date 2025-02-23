@@ -5,7 +5,10 @@ import {
   findUserByEmail,
   createUser,
   updateUser,
+  addRefreshToken,
+  removeRefreshToken,
   findUserByRefreshToken,
+  getUserRefreshTokens,
   findUserByGoogleId,
   findUserByResetToken,
 } from "../repositories/authRepository";
@@ -51,9 +54,8 @@ export const authenticateGoogleUser = async (profile: any) => {
     }
   }
 
-  await updateUser({ id: user!.id }, { refreshToken: null });
   const refreshToken = generateRefreshToken(user!.id);
-  await updateUser({ id: user!.id }, { refreshToken });
+  await addRefreshToken(user!.id, refreshToken);
 
   return {
     user,
@@ -120,13 +122,13 @@ export const verifyOTP = async (email: string, otp: string) => {
   }
 
   const refreshToken = generateRefreshToken(user.id);
+  await addRefreshToken(user.id, refreshToken);
 
   await updateUser(
     { email },
     {
       otp: null,
       otpExpiresAt: null,
-      refreshToken,
       verified: true,
     }
   );
@@ -143,14 +145,18 @@ export const loginUser = async (
   rememberMe: boolean = false
 ) => {
   const user = await findUserByEmail(email);
-  if (!user) throw new HttpError("User tidak ditemukan", 404);
-  if (!(await bcrypt.compare(password, user.password as string)))
-    throw new HttpError("Password salah", 401);
+  if (!user || !(await bcrypt.compare(password, user.password as string)))
+    throw new HttpError("Email atau password salah", 401);
   if (!user.verified) throw new HttpError("Akun belum diverifikasi", 403);
 
   const refreshToken = generateRefreshToken(user.id, rememberMe);
 
-  await updateUser({ email }, { refreshToken });
+  const refreshTokens = await getUserRefreshTokens(user.id);
+  if (refreshTokens.length >= 2) {
+    await removeRefreshToken(refreshTokens[0].token);
+  }
+
+  await addRefreshToken(user.id, refreshToken);
 
   return {
     accessToken: generateAccessToken(user.id),
@@ -167,7 +173,8 @@ export const refreshAccessToken = async (refreshToken: string) => {
     jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!);
 
     const newRefreshToken = generateRefreshToken(user.id);
-    await updateUser({ email: user.email }, { refreshToken: newRefreshToken });
+    await removeRefreshToken(refreshToken);
+    await addRefreshToken(user.id, newRefreshToken);
 
     return {
       accessToken: generateAccessToken(user.id),
@@ -180,14 +187,9 @@ export const refreshAccessToken = async (refreshToken: string) => {
 
 export const logoutUser = async (refreshToken: string) => {
   const user = await findUserByRefreshToken(refreshToken);
-
   if (!user) throw new HttpError("Refresh token tidak valid", 403);
 
-  try {
-    await updateUser({ email: user.email }, { refreshToken: null });
-  } catch (err) {
-    throw new HttpError("Refresh token tidak valid atau kadaluwarsa", 403);
-  }
+  await removeRefreshToken(refreshToken);
 };
 
 export const requestPasswordReset = async (email: string) => {
@@ -218,10 +220,7 @@ export const resetPassword = async (
     !user.resetTokenExpiresAt ||
     user.resetTokenExpiresAt.getTime() < Date.now()
   )
-    throw new HttpError("Reset token tidak valid atau kadaluwarsa", 404);
-
-  if (!(await bcrypt.compare(resetToken, user.resetToken)))
-    throw new HttpError("Reset token salah", 401);
+    throw new HttpError("Reset token tidak valid atau kadaluwarsa", 403);
 
   const hashedPassword = await bcrypt.hash(newPassword, 10);
   await updateUser(

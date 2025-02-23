@@ -18,7 +18,7 @@ export const register = async (
   try {
     const { email, password } = matchedData(req);
     const name = email
-      .substring(0, email.length - 10)
+      .substring(0, email.indexOf("@"))
       .replace(/^./, (c: string) => c.toUpperCase());
     await registerUser(email, password, name);
     res.status(201).json({ message: "OTP telah dikirim ke email" });

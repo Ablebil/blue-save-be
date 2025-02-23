@@ -19,8 +19,33 @@ export const updateUser = async (
   });
 };
 
+export const addRefreshToken = async (userId: string, token: string) => {
+  return await prisma.refreshToken.create({
+    data: {
+      token,
+      userId,
+    },
+  });
+};
+
+export const removeRefreshToken = async (token: string) => {
+  return await prisma.refreshToken.deleteMany({
+    where: { token },
+  });
+};
+
 export const findUserByRefreshToken = async (refreshToken: string) => {
-  return await prisma.user.findFirst({ where: { refreshToken } });
+  const refreshTokenRecord = await prisma.refreshToken.findFirst({
+    where: { token: refreshToken },
+    include: { user: true },
+  });
+  return refreshTokenRecord?.user || null;
+};
+
+export const getUserRefreshTokens = async (userId: string) => {
+  return await prisma.refreshToken.findMany({
+    where: { userId },
+  });
 };
 
 export const findUserByGoogleId = async (googleId: string) => {
