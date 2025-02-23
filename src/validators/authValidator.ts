@@ -108,3 +108,43 @@ export const logoutValidation = checkSchema({
     },
   },
 });
+
+export const forgotPasswordValidation = checkSchema({
+  email: {
+    in: ["body"],
+    isEmail: {
+      errorMessage: "Format email tidak valid",
+    },
+    notEmpty: {
+      errorMessage: "Email tidak  boleh kosong",
+    },
+  },
+});
+
+export const resetPasswordValidation = checkSchema({
+  resetToken: {
+    in: ["query"],
+    isString: {
+      errorMessage: "Reset token harus berupa string",
+    },
+    notEmpty: {
+      errorMessage: "Reset token tidak boleh kosong",
+    },
+  },
+  newPassword: {
+    in: ["body"],
+    isLength: {
+      options: { min: 8 },
+      errorMessage: "Password harus 8 karakter atau lebih",
+    },
+    notEmpty: {
+      errorMessage: "Password tidak boleh kosong",
+    },
+    matches: {
+      options:
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/,
+      errorMessage:
+        "Password harus berisi minimal satu huruf kecil, satu huruf kapital, satu angka, dan satu karakter spesial",
+    },
+  },
+});

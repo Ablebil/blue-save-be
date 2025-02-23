@@ -5,6 +5,8 @@ import {
   loginUser,
   refreshAccessToken,
   logoutUser,
+  requestPasswordReset,
+  resetPassword,
 } from "../services/authService";
 import { matchedData } from "express-validator/lib";
 
@@ -18,7 +20,7 @@ export const register = async (
     const name = email
       .substring(0, email.length - 10)
       .replace(/^./, (c: string) => c.toUpperCase());
-    const otp = await registerUser(email, password, name);
+    await registerUser(email, password, name);
     res.status(201).json({ message: "OTP telah dikirim ke email" });
   } catch (err) {
     next(err);
@@ -117,6 +119,36 @@ export const logout = async (
     await logoutUser(refreshToken);
 
     res.status(200).json({ message: "Logout berhasil" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const forgotPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { email } = matchedData(req);
+    await requestPasswordReset(email);
+    res
+      .status(200)
+      .json({ message: "Link reset password telah dikirim ke email" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const resetPasswordHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { resetToken, newPassword } = matchedData(req);
+    await resetPassword(resetToken, newPassword);
+    res.status(200).json({ message: "Password berhasil diperbarui" });
   } catch (err) {
     next(err);
   }

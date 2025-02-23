@@ -7,6 +7,8 @@ import {
   googleAuthCallback,
   refreshTokenHandler,
   logout,
+  forgotPassword,
+  resetPasswordHandler,
 } from "../controllers/authController";
 import {
   registerValidation,
@@ -14,6 +16,8 @@ import {
   loginValidation,
   refreshTokenValidation,
   logoutValidation,
+  forgotPasswordValidation,
+  resetPasswordValidation,
 } from "../validators/authValidator";
 import { validationResultHandler } from "../middlewares/validationResultHandler";
 import { otpLimiter } from "../middlewares/rateLimiter";
@@ -51,5 +55,19 @@ router.post(
 );
 
 router.post("/logout", logoutValidation, validationResultHandler, logout);
+
+router.post(
+  "/forgot-password",
+  forgotPasswordValidation,
+  validationResultHandler,
+  forgotPassword
+);
+
+router.post(
+  "/reset-password",
+  resetPasswordValidation,
+  validationResultHandler,
+  resetPasswordHandler
+);
 
 export default router;

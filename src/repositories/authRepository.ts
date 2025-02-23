@@ -1,4 +1,5 @@
 import prisma from "../config/database";
+import bcrypt from "bcrypt";
 
 export const findUserByEmail = async (email: string) => {
   return await prisma.user.findUnique({ where: { email } });
@@ -24,4 +25,17 @@ export const findUserByRefreshToken = async (refreshToken: string) => {
 
 export const findUserByGoogleId = async (googleId: string) => {
   return await prisma.user.findUnique({ where: { googleId } });
+};
+
+export const findUserByResetToken = async (resetToken: string) => {
+  const users = await prisma.user.findMany({
+    where: { resetTokenExpiresAt: { gt: new Date() } },
+  });
+
+  for (const user of users) {
+    if (user.resetToken && (await bcrypt.compare(resetToken, user.resetToken)))
+      return user;
+  }
+
+  return null;
 };

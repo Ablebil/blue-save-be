@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import {
   findUserByEmail,
@@ -6,13 +7,14 @@ import {
   updateUser,
   findUserByRefreshToken,
   findUserByGoogleId,
+  findUserByResetToken,
 } from "../repositories/authRepository";
 import {
   generateAccessToken,
   generateRefreshToken,
   generateOTP,
 } from "../utils/jwt";
-import { sendOTPEmail } from "../utils/email";
+import { sendOTPEmail, sendResetLink } from "../utils/email";
 import HttpError from "../utils/HttpError";
 import { Role } from "../types";
 
@@ -49,6 +51,7 @@ export const authenticateGoogleUser = async (profile: any) => {
     }
   }
 
+  await updateUser({ id: user!.id }, { refreshToken: null });
   const refreshToken = generateRefreshToken(user!.id);
   await updateUser({ id: user!.id }, { refreshToken });
 
@@ -66,29 +69,29 @@ export const registerUser = async (
 ) => {
   let user = await findUserByEmail(email);
 
-  if (user && user.googleId && !user.password) {
-    console.log(
-      "User telah mendaftar dengan Google, menambahkan password dan OTP"
-    );
+  if (user) {
+    if (user.googleId && !user.password) {
+      console.log(
+        "User telah mendaftar dengan Google, menambahkan password dan OTP"
+      );
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const otp = generateOTP();
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const otp = generateOTP();
 
-    user = await updateUser(
-      { email },
-      {
-        password: hashedPassword,
-        otp,
-        otpExpiresAt: new Date(Date.now() + 5 * 60 * 1000),
-      }
-    );
+      user = await updateUser(
+        { email },
+        {
+          password: hashedPassword,
+          otp,
+          otpExpiresAt: new Date(Date.now() + 5 * 60 * 1000),
+        }
+      );
 
-    await sendOTPEmail(email, otp);
-
-    return { message: "OTP telah dikirim ke email" };
+      return await sendOTPEmail(email, otp);
+    } else {
+      throw new HttpError("Email sudah terdaftar", 409);
+    }
   }
-
-  if (user) throw new HttpError("Email sudah terdaftar", 409);
 
   const hashedPassword = await bcrypt.hash(password, 10);
   const otp = generateOTP();
@@ -103,8 +106,6 @@ export const registerUser = async (
   });
 
   await sendOTPEmail(email, otp);
-
-  return { message: "OTP telah dikirim ke email" };
 };
 
 export const verifyOTP = async (email: string, otp: string) => {
@@ -145,7 +146,7 @@ export const loginUser = async (
   if (!user) throw new HttpError("User tidak ditemukan", 404);
   if (!(await bcrypt.compare(password, user.password as string)))
     throw new HttpError("Password salah", 401);
-  if (!user.verified) throw new HttpError("Akun beblum diverifikasi", 403);
+  if (!user.verified) throw new HttpError("Akun belum diverifikasi", 403);
 
   const refreshToken = generateRefreshToken(user.id, rememberMe);
 
@@ -187,4 +188,44 @@ export const logoutUser = async (refreshToken: string) => {
   } catch (err) {
     throw new HttpError("Refresh token tidak valid atau kadaluwarsa", 403);
   }
+};
+
+export const requestPasswordReset = async (email: string) => {
+  const user = await findUserByEmail(email);
+  if (!user) throw new HttpError("User tidak ditemukan", 404);
+
+  const resetToken = crypto.randomBytes(32).toString("hex");
+  const hashedResetToken = await bcrypt.hash(resetToken, 10);
+  const expiry = new Date(Date.now() + 60 * 60 * 1000);
+
+  await updateUser(
+    { email },
+    { resetToken: hashedResetToken, resetTokenExpiresAt: expiry }
+  );
+
+  await sendResetLink(email, resetToken);
+};
+
+export const resetPassword = async (
+  resetToken: string,
+  newPassword: string
+) => {
+  const user = await findUserByResetToken(resetToken);
+
+  if (
+    !user ||
+    !user.resetToken ||
+    !user.resetTokenExpiresAt ||
+    user.resetTokenExpiresAt.getTime() < Date.now()
+  )
+    throw new HttpError("Reset token tidak valid atau kadaluwarsa", 404);
+
+  if (!(await bcrypt.compare(resetToken, user.resetToken)))
+    throw new HttpError("Reset token salah", 401);
+
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  await updateUser(
+    { id: user.id },
+    { password: hashedPassword, resetToken: null, resetTokenExpiresAt: null }
+  );
 };
