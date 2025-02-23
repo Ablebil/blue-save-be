@@ -8,6 +8,7 @@ import routes from "./routes/routes";
 import { errorHandler } from "./middlewares/errorHandler";
 import passport from "passport";
 import "./config/passport";
+import "./utils/cronJob";
 
 dotenv.config();
 const app = express();

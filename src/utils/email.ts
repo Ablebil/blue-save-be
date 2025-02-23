@@ -19,7 +19,7 @@ export const sendOTPEmail = async (email: string, otp: string) => {
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log(`OTP telah dikirim ke  ${email}`);
+    console.log(`OTP has been sent to ${email}`);
   } catch (err: any) {
     throw new HttpError(`Gagal mengirim email: ${err.message}`, 500);
   }
