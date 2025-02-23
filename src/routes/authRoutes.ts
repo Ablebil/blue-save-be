@@ -20,11 +20,24 @@ import {
   resetPasswordValidation,
 } from "../validators/authValidator";
 import { validationResultHandler } from "../middlewares/validationResultHandler";
-import { otpLimiter } from "../middlewares/rateLimiter";
+import {
+  otpLimiter,
+  registerLimiter,
+  loginLimiter,
+  refreshTokenLimiter,
+  forgotPasswordLimiter,
+  passwordResetLimiter,
+} from "../middlewares/rateLimiter";
 
 const router = Router();
 
-router.post("/register", registerValidation, validationResultHandler, register);
+router.post(
+  "/register",
+  registerLimiter,
+  registerValidation,
+  validationResultHandler,
+  register
+);
 
 router.post(
   "/verify-otp",
@@ -34,7 +47,13 @@ router.post(
   verify
 );
 
-router.post("/login", loginValidation, validationResultHandler, login);
+router.post(
+  "/login",
+  loginLimiter,
+  loginValidation,
+  validationResultHandler,
+  login
+);
 
 router.get(
   "/google",
@@ -49,6 +68,7 @@ router.get(
 
 router.post(
   "/refresh-token",
+  refreshTokenLimiter,
   refreshTokenValidation,
   validationResultHandler,
   refreshTokenHandler
@@ -58,6 +78,7 @@ router.post("/logout", logoutValidation, validationResultHandler, logout);
 
 router.post(
   "/forgot-password",
+  forgotPasswordLimiter,
   forgotPasswordValidation,
   validationResultHandler,
   forgotPassword
@@ -65,6 +86,7 @@ router.post(
 
 router.post(
   "/reset-password",
+  passwordResetLimiter,
   resetPasswordValidation,
   validationResultHandler,
   resetPasswordHandler

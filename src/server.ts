@@ -6,6 +6,7 @@ import morgan from "morgan";
 import prisma from "./config/database";
 import routes from "./routes/routes";
 import { errorHandler } from "./middlewares/errorHandler";
+import { globalLimiter } from "./middlewares/rateLimiter";
 import passport from "passport";
 import "./config/passport";
 import "./utils/cronJob";
@@ -19,7 +20,7 @@ app.use(morgan("dev"));
 app.use(passport.initialize());
 app.use(express.json());
 
-app.use("/api/v1", routes);
+app.use("/api/v1", globalLimiter, routes);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
