@@ -4,7 +4,7 @@ import HttpError from "../utils/HttpError";
 
 export const getUserProfile = async (userId: string) => {
   const user = await findUserById(userId);
-  if (!user) throw new HttpError("User tidak ditemukan", 404);
+  if (!user) throw new HttpError("User not found", 404);
   return user;
 };
 
@@ -14,7 +14,7 @@ export const updateUserProfile = async (
   password?: string
 ) => {
   const user = await findUserById(userId);
-  if (!user) throw new HttpError("User tidak ditemukan", 404);
+  if (!user) throw new HttpError("User not found", 404);
 
   if (password) {
     password = await bcrypt.hash(password, 10);

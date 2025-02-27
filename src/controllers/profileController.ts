@@ -26,7 +26,7 @@ export const updateProfile = async (
     const { id: userId } = (req as any).user;
     const { name, password } = matchedData(req);
     const user = await updateUserProfile(userId, name, password);
-    res.status(200).json({ message: "Profil berhasil diperbarui" });
+    res.status(200).json({ message: "Profil has been updated successfully" });
   } catch (err) {
     next(err);
   }

@@ -30,9 +30,7 @@ export const authenticateGoogleUser = async (profile: any) => {
     user = await findUserByEmail(email);
 
     if (user) {
-      console.log(
-        "User ditemukan dengan email yang sama, menambahkan Google ID"
-      );
+      console.log("User found with the same email, adding Google ID");
 
       if (!user.verified) {
         user = await updateUser(
@@ -43,7 +41,7 @@ export const authenticateGoogleUser = async (profile: any) => {
         user = await updateUser({ email }, { googleId: profile.id });
       }
     } else {
-      console.log("User tidak ditemukan, membuat akun baru dengan Google");
+      console.log("User not found, creating a new account with Google");
       user = await createUser({
         googleId: profile.id,
         email,
@@ -73,9 +71,7 @@ export const registerUser = async (
 
   if (user) {
     if (user.googleId && !user.password) {
-      console.log(
-        "User telah mendaftar dengan Google, menambahkan password dan OTP"
-      );
+      console.log("User has registered with Google, adding password and OTP");
 
       const hashedPassword = await bcrypt.hash(password, 10);
       const otp = generateOTP();
@@ -91,7 +87,7 @@ export const registerUser = async (
 
       return await sendOTPEmail(email, otp);
     } else {
-      throw new HttpError("Email sudah terdaftar", 409);
+      throw new HttpError("Email already registered", 409);
     }
   }
 
@@ -112,13 +108,13 @@ export const registerUser = async (
 
 export const verifyOTP = async (email: string, otp: string) => {
   const user = await findUserByEmail(email);
-  if (!user) throw new HttpError("User tidak ditemukan", 404);
+  if (!user) throw new HttpError("User not found", 404);
   if (
     !user.otp ||
     user.otp !== otp ||
     Date.now() > user.otpExpiresAt!.getTime()
   ) {
-    throw new HttpError("OTP tidak valid atau sudah kadaluwarsa", 400);
+    throw new HttpError("Invalid or expired OTP", 400);
   }
 
   const refreshToken = generateRefreshToken(user.id);
@@ -146,8 +142,8 @@ export const loginUser = async (
 ) => {
   const user = await findUserByEmail(email);
   if (!user || !(await bcrypt.compare(password, user.password as string)))
-    throw new HttpError("Email atau password salah", 401);
-  if (!user.verified) throw new HttpError("Akun belum diverifikasi", 403);
+    throw new HttpError("Incorrect email or password", 401);
+  if (!user.verified) throw new HttpError("Account not verified", 403);
 
   const refreshToken = generateRefreshToken(user.id, rememberMe);
 
@@ -167,7 +163,7 @@ export const loginUser = async (
 export const refreshAccessToken = async (refreshToken: string) => {
   const user = await findUserByRefreshToken(refreshToken);
 
-  if (!user) throw new HttpError("Refresh token tidak valid", 403);
+  if (!user) throw new HttpError("Invalid refresh token", 403);
 
   try {
     jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!);
@@ -181,20 +177,20 @@ export const refreshAccessToken = async (refreshToken: string) => {
       refreshToken: newRefreshToken,
     };
   } catch (err) {
-    throw new HttpError("Refresh token tidak valid atau kadaluwarsa", 403);
+    throw new HttpError("Invalid or expired refresh token", 403);
   }
 };
 
 export const logoutUser = async (refreshToken: string) => {
   const user = await findUserByRefreshToken(refreshToken);
-  if (!user) throw new HttpError("Refresh token tidak valid", 403);
+  if (!user) throw new HttpError("Invalid refresh token", 403);
 
   await removeRefreshToken(refreshToken);
 };
 
 export const requestPasswordReset = async (email: string) => {
   const user = await findUserByEmail(email);
-  if (!user) throw new HttpError("User tidak ditemukan", 404);
+  if (!user) throw new HttpError("User not found", 404);
 
   const resetToken = crypto.randomBytes(32).toString("hex");
   const hashedResetToken = await bcrypt.hash(resetToken, 10);
@@ -220,7 +216,7 @@ export const resetPassword = async (
     !user.resetTokenExpiresAt ||
     user.resetTokenExpiresAt.getTime() < Date.now()
   )
-    throw new HttpError("Reset token tidak valid atau kadaluwarsa", 403);
+    throw new HttpError("Invalid or expired reset token", 403);
 
   const hashedPassword = await bcrypt.hash(newPassword, 10);
   await updateUser(

@@ -4,11 +4,11 @@ export const updateProfileValidation = checkSchema({
   name: {
     in: ["body"],
     isString: {
-      errorMessage: "Nama harus berupa string",
+      errorMessage: "Name must be a string",
     },
     isLength: {
       options: { min: 5, max: 255 },
-      errorMessage: "Nama harus di antara 5 dan 255 karakter",
+      errorMessage: "Name must be between 5 and 255 characters long",
     },
     optional: true,
     trim: true,
@@ -17,14 +17,14 @@ export const updateProfileValidation = checkSchema({
     in: ["body"],
     isLength: {
       options: { min: 8 },
-      errorMessage: "Password harus 8 karakter atau lebih",
+      errorMessage: "Password must be at least 8 characters long",
     },
     optional: true,
     matches: {
       options:
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/,
       errorMessage:
-        "Password harus berisi minimal satu huruf kecil, satu huruf kapital, satu angka, dan satu karakter spesial",
+        "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character",
     },
   },
 });

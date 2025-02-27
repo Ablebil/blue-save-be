@@ -13,15 +13,15 @@ export const sendOTPEmail = async (email: string, otp: string) => {
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: email,
-    subject: "Kode OTP Verifikasi Akun",
-    text: `Kode OTP Anda adalah: ${otp}. Kode ini berlaku selama 5 menit.`,
+    subject: "Account Verification OTP Code",
+    text: `Your OTP code is: ${otp}. This code is valid for 5 minutes.`,
   };
 
   try {
     await transporter.sendMail(mailOptions);
     console.log(`OTP has been sent to ${email}`);
   } catch (err: any) {
-    throw new HttpError(`Gagal mengirim email: ${err.message}`, 500);
+    throw new HttpError(`Failed to send email: ${err.message}`, 500);
   }
 };
 
@@ -31,14 +31,14 @@ export const sendResetLink = async (email: string, resetToken: string) => {
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: email,
-    subject: "Link Reset Password",
-    text: `Berikut adalah link untuk reset password: ${resetLink}`,
+    subject: "Password Reset Link",
+    text: `Here is the link to reset your password: ${resetLink}`,
   };
 
   try {
     await transporter.sendMail(mailOptions);
     console.log(`Link has been sent to ${email}`);
   } catch (err: any) {
-    throw new HttpError(`Gagal mengirim email ${err.message}`, 500);
+    throw new HttpError(`Failed to send email: ${err.message}`, 500);
   }
 };

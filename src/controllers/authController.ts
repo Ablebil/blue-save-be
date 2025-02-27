@@ -21,7 +21,7 @@ export const register = async (
       .substring(0, email.indexOf("@"))
       .replace(/^./, (c: string) => c.toUpperCase());
     await registerUser(email, password, name);
-    res.status(201).json({ message: "OTP telah dikirim ke email" });
+    res.status(201).json({ message: "OTP has been sent to email" });
   } catch (err) {
     next(err);
   }
@@ -36,7 +36,7 @@ export const verify = async (
     const { email, otp } = matchedData(req);
     const { accessToken, refreshToken } = await verifyOTP(email, otp);
     res.status(200).json({
-      message: "Verifikasi berhasil",
+      message: "Verification successful",
       accessToken,
       refreshToken,
     });
@@ -58,7 +58,7 @@ export const login = async (
       rememberMe
     );
     res.status(200).json({
-      message: "Berhasil login",
+      message: "Login successful",
       accessToken,
       refreshToken,
     });
@@ -74,14 +74,14 @@ export const googleAuthCallback = async (
 ) => {
   try {
     if (!req.user) {
-      res.status(401).json({ message: "Google login gagal" });
+      res.status(401).json({ message: "Google login failed" });
       return;
     }
 
     const { user, accessToken, refreshToken } = req.user as any;
 
     res.status(200).json({
-      message: "Login dengan Google berhasil",
+      message: "Google login successful",
       user,
       accessToken,
       refreshToken,
@@ -118,7 +118,7 @@ export const logout = async (
 
     await logoutUser(refreshToken);
 
-    res.status(200).json({ message: "Logout berhasil" });
+    res.status(200).json({ message: "Logout successful" });
   } catch (err) {
     next(err);
   }
@@ -134,7 +134,7 @@ export const forgotPassword = async (
     await requestPasswordReset(email);
     res
       .status(200)
-      .json({ message: "Link reset password telah dikirim ke email" });
+      .json({ message: "Password reset link has been sent to email" });
   } catch (err) {
     next(err);
   }
@@ -148,7 +148,7 @@ export const resetPasswordHandler = async (
   try {
     const { resetToken, newPassword } = matchedData(req);
     await resetPassword(resetToken, newPassword);
-    res.status(200).json({ message: "Password berhasil diperbarui" });
+    res.status(200).json({ message: "Password has been updated successfully" });
   } catch (err) {
     next(err);
   }

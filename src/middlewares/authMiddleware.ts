@@ -12,7 +12,7 @@ export const isAdmin = async (
   const user = await findUserByEmail(email);
 
   if (!user || user.role !== Role.ADMIN) {
-    return next(new HttpError("Akses ditolak, hanya untuk ADMIN", 403));
+    return next(new HttpError("Access denied, ADMIN only", 403));
   }
 
   next();
