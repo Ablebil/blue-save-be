@@ -24,9 +24,9 @@ export const createNewReport = async (
   const { data, error } = await supabase.storage
     .from("reports")
     .upload(
-      `public/${userId}/${Date.now()}_${Math.random()
-        .toString(36)
-        .substring(2)}_${file.originalname}`,
+      `${userId}/${Date.now()}_${Math.random().toString(36).substring(2)}_${
+        file.originalname
+      }`,
       fileStream,
       {
         cacheControl: "3600",
