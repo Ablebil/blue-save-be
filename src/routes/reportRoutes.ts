@@ -2,6 +2,8 @@ import { Router } from "express";
 import {
   createReport,
   updateReportStatus,
+  getAllReports,
+  getReportsByUserId,
 } from "../controllers/reportController";
 import upload from "../middlewares/upload";
 import passport from "passport";
@@ -30,6 +32,19 @@ router.patch(
   updateReportStatusValidation,
   validationResultHandler,
   updateReportStatus
+);
+
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  isAdmin,
+  getAllReports
+);
+
+router.get(
+  "/user-reports",
+  passport.authenticate("jwt", { session: false }),
+  getReportsByUserId
 );
 
 export default router;

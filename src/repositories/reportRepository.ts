@@ -15,3 +15,13 @@ export const updateStatus = async (id: string, status: ReportStatus) => {
     data: { status },
   });
 };
+
+export const findAllReports = async () => {
+  return await prisma.report.findMany();
+};
+
+export const findReportsByUserId = async (userId: string) => {
+  return await prisma.report.findMany({
+    where: { userId },
+  });
+};

@@ -4,6 +4,8 @@ import {
   createReport,
   findReportById,
   updateStatus,
+  findAllReports,
+  findReportsByUserId,
 } from "../repositories/reportRepository";
 import HttpError from "../utils/HttpError";
 import { ReportStatus } from "../types";
@@ -69,4 +71,20 @@ export const updateExistingReportStatus = async (
   }
 
   return await updateStatus(reportId, status);
+};
+
+export const fetchAllReports = async () => {
+  const reports = await findAllReports();
+  return reports.map((report) => ({
+    ...report,
+    createdAt: formatDateWithoutYear(new Date(report.createdAt)),
+  }));
+};
+
+export const fetchReportsByUserId = async (userId: string) => {
+  const reports = await findReportsByUserId(userId);
+  return reports.map((report) => ({
+    ...report,
+    createdAt: formatDateWithoutYear(new Date(report.createdAt)),
+  }));
 };

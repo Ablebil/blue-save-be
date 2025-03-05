@@ -3,6 +3,8 @@ import { matchedData } from "express-validator";
 import {
   createNewReport,
   updateExistingReportStatus,
+  fetchAllReports,
+  fetchReportsByUserId,
 } from "../services/reportService";
 
 export const createReport = async (
@@ -40,6 +42,33 @@ export const updateReportStatus = async (
     const report = await updateExistingReportStatus(reportId, status);
 
     res.status(200).json({ message: `Report status updated to ${status}` });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getAllReports = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const reports = await fetchAllReports();
+    res.status(200).json(reports);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getReportsByUserId = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = (req as any).user.id;
+    const reports = await fetchReportsByUserId(userId);
+    res.status(200).json(reports);
   } catch (err) {
     next(err);
   }
