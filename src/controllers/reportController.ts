@@ -21,7 +21,7 @@ export const createReport = async (
       title,
       location,
       description,
-      file,
+      file!,
       userId
     );
 

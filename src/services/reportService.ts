@@ -15,7 +15,7 @@ export const createNewReport = async (
   title: string,
   location: string,
   description: string,
-  file: any,
+  file: Express.Multer.File,
   userId: string
 ) => {
   if (!file) {
@@ -75,7 +75,7 @@ export const updateExistingReportStatus = async (
 
 export const fetchAllReports = async () => {
   const reports = await findAllReports();
-  return reports.map((report) => ({
+  return reports.map((report: any) => ({
     ...report,
     createdAt: formatDateWithoutYear(new Date(report.createdAt)),
   }));
@@ -83,7 +83,7 @@ export const fetchAllReports = async () => {
 
 export const fetchReportsByUserId = async (userId: string) => {
   const reports = await findReportsByUserId(userId);
-  return reports.map((report) => ({
+  return reports.map((report: any) => ({
     ...report,
     createdAt: formatDateWithoutYear(new Date(report.createdAt)),
   }));

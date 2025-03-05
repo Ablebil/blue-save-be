@@ -7,5 +7,5 @@ export enum ReportStatus {
   WAITING = "WAITING",
   VERIFIED = "VERIFIED",
   INVALID = "INVALID",
-  RESOLVED = "RESOLVED" 
+  RESOLVED = "RESOLVED",
 }
