@@ -3,10 +3,11 @@ import { Readable } from "stream";
 import {
   createReport,
   findReportById,
-  updateReportStatus,
+  updateStatus,
 } from "../repositories/reportRepository";
 import HttpError from "../utils/HttpError";
 import { ReportStatus } from "../types";
+import { formatDateWithoutYear } from "../utils/date";
 
 export const createNewReport = async (
   title: string,
@@ -44,20 +45,28 @@ export const createNewReport = async (
     supabase.storage.from("reports").getPublicUrl(data.path).data.publicUrl
   }`;
 
-  return await createReport({
+  const report = await createReport({
     title,
     location,
     description,
     media: mediaUrl,
     userId,
   });
+
+  return {
+    ...report,
+    createdAt: formatDateWithoutYear(new Date(report.createdAt)),
+  };
 };
 
-export const verifyExistingReport = async (reportId: string) => {
+export const updateExistingReportStatus = async (
+  reportId: string,
+  status: ReportStatus
+) => {
   const report = await findReportById(reportId);
   if (!report) {
     throw new HttpError("Report not found", 404);
   }
 
-  return await updateReportStatus(reportId, ReportStatus.VERIFIED);
+  return await updateStatus(reportId, status);
 };

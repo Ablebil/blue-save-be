@@ -9,7 +9,7 @@ export const findReportById = async (id: string) => {
   return await prisma.report.findUnique({ where: { id } });
 };
 
-export const updateReportStatus = async (id: string, status: ReportStatus) => {
+export const updateStatus = async (id: string, status: ReportStatus) => {
   return await prisma.report.update({
     where: { id },
     data: { status },

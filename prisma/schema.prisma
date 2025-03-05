@@ -40,7 +40,7 @@ model Report {
   location    String       @db.VarChar(255)
   description String       @db.Text
   media       String       @db.VarChar(255)
-  status      ReportStatus @default(PENDING)
+  status      ReportStatus @default(WAITING)
   userId      String       @db.Uuid
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
@@ -54,7 +54,8 @@ enum Role {
 }
 
 enum ReportStatus {
-  PENDING
+  WAITING
   VERIFIED
-  FORWARDED
+  INVALID
+  RESOLVED
 }

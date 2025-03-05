@@ -4,7 +4,8 @@ export enum Role {
 }
 
 export enum ReportStatus {
-  PENDING = "PENDING",
+  WAITING = "WAITING",
   VERIFIED = "VERIFIED",
-  FORWARDED = "FORWARDED",
+  INVALID = "INVALID",
+  RESOLVED = "RESOLVED" 
 }

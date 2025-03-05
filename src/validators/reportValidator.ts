@@ -42,7 +42,7 @@ export const createReportValidation = checkSchema({
   },
 });
 
-export const verifyReportValidation = checkSchema({
+export const updateReportStatusValidation = checkSchema({
   reportId: {
     in: ["params"],
     isUUID: {
@@ -50,6 +50,19 @@ export const verifyReportValidation = checkSchema({
     },
     notEmpty: {
       errorMessage: "Report ID is required",
+    },
+  },
+  status: {
+    in: ["body"],
+    isString: {
+      errorMessage: "Status must be a string",
+    },
+    notEmpty: {
+      errorMessage: "Status is required",
+    },
+    isIn: {
+      options: [["WAITING", "VERIFIED", "INVALID", "RESOLVED"]],
+      errorMessage: "Invalid status value",
     },
   },
 });

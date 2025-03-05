@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { matchedData } from "express-validator";
 import {
   createNewReport,
-  verifyExistingReport,
+  updateExistingReportStatus,
 } from "../services/reportService";
 
 export const createReport = async (
@@ -11,9 +11,6 @@ export const createReport = async (
   next: NextFunction
 ) => {
   try {
-    console.log(req.user);
-    console.log("Uploaded file:", req.file);
-
     const { title, location, description } = matchedData(req);
     const file = req.file;
     const userId = (req as any).user.id;
@@ -32,17 +29,17 @@ export const createReport = async (
   }
 };
 
-export const verifyReport = async (
+export const updateReportStatus = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { reportId } = req.params;
+    const { reportId, status } = matchedData(req);
 
-    const report = await verifyExistingReport(reportId);
+    const report = await updateExistingReportStatus(reportId, status);
 
-    res.status(200).json({ message: "Report verified successfully", report });
+    res.status(200).json({ message: `Report status updated to ${status}` });
   } catch (err) {
     next(err);
   }

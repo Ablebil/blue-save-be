@@ -1,11 +1,14 @@
 import { Router } from "express";
-import { createReport, verifyReport } from "../controllers/reportController";
+import {
+  createReport,
+  updateReportStatus,
+} from "../controllers/reportController";
 import upload from "../middlewares/upload";
 import passport from "passport";
 import { isAdmin } from "../middlewares/authMiddleware";
 import {
   createReportValidation,
-  verifyReportValidation,
+  updateReportStatusValidation,
 } from "../validators/reportValidator";
 import { validationResultHandler } from "../middlewares/validationResultHandler";
 
@@ -21,12 +24,12 @@ router.post(
 );
 
 router.patch(
-  "/:reportId/verify",
+  "/update-status/:reportId",
   passport.authenticate("jwt", { session: false }),
   isAdmin,
-  verifyReportValidation,
+  updateReportStatusValidation,
   validationResultHandler,
-  verifyReport
+  updateReportStatus
 );
 
 export default router;
