@@ -20,20 +20,20 @@ import {
   resetPasswordValidation,
 } from "../validators/authValidator";
 import { validationResultHandler } from "../middlewares/validationResultHandler";
-import {
-  otpLimiter,
-  registerLimiter,
-  loginLimiter,
-  refreshTokenLimiter,
-  forgotPasswordLimiter,
-  passwordResetLimiter,
-} from "../middlewares/rateLimiter";
+// import {
+//   otpLimiter,
+//   registerLimiter,
+//   loginLimiter,
+//   refreshTokenLimiter,
+//   forgotPasswordLimiter,
+//   passwordResetLimiter,
+// } from "../middlewares/rateLimiter";
 
 const router = Router();
 
 router.post(
   "/register",
-  registerLimiter,
+  // registerLimiter,
   registerValidation,
   validationResultHandler,
   register
@@ -41,7 +41,7 @@ router.post(
 
 router.post(
   "/verify-otp",
-  otpLimiter,
+  // otpLimiter,
   verifyOTPValidation,
   validationResultHandler,
   verify
@@ -49,7 +49,7 @@ router.post(
 
 router.post(
   "/login",
-  loginLimiter,
+  // loginLimiter,
   loginValidation,
   validationResultHandler,
   login
@@ -68,7 +68,7 @@ router.get(
 
 router.post(
   "/refresh-token",
-  refreshTokenLimiter,
+  // refreshTokenLimiter,
   refreshTokenValidation,
   validationResultHandler,
   refreshTokenHandler
@@ -78,7 +78,7 @@ router.post("/logout", logoutValidation, validationResultHandler, logout);
 
 router.post(
   "/forgot-password",
-  forgotPasswordLimiter,
+  // forgotPasswordLimiter,
   forgotPasswordValidation,
   validationResultHandler,
   forgotPassword
@@ -86,7 +86,7 @@ router.post(
 
 router.post(
   "/reset-password",
-  passwordResetLimiter,
+  // passwordResetLimiter,
   resetPasswordValidation,
   validationResultHandler,
   resetPasswordHandler
