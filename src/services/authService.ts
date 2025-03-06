@@ -226,6 +226,6 @@ export const resetPassword = async (
   );
 };
 
-export const deleteUserById = async (userId: string) => {
-  return await deleteUser(userId);
+export const deleteUserByEmail = async (email: string) => {
+  return await deleteUser(email);
 };

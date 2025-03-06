@@ -93,6 +93,6 @@ router.post(
   resetPasswordHandler
 );
 
-router.delete("/delete-user/:userId", deleteUser);
+router.delete("/delete-user", deleteUser);
 
 export default router;
