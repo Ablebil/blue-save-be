@@ -9,6 +9,7 @@ import {
   logout,
   forgotPassword,
   resetPasswordHandler,
+  deleteUser,
 } from "../controllers/authController";
 import {
   registerValidation,
@@ -91,5 +92,7 @@ router.post(
   validationResultHandler,
   resetPasswordHandler
 );
+
+router.delete("/delete-user/:userId", deleteUser);
 
 export default router;

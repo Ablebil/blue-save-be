@@ -64,3 +64,9 @@ export const findUserByResetToken = async (resetToken: string) => {
 
   return null;
 };
+
+export const deleteUser = async (userId: string) => {
+  return await prisma.user.delete({
+    where: { id: userId },
+  });
+};
