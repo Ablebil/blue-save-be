@@ -10,36 +10,36 @@ async function main() {
       location: "Trenggalek, East Java",
       description: "Ocean Trash Trash Trash",
       media:
-        "https://qdtfpohyfsqvunddzoge.supabase.co/storage/v1/object/public/reports/a08e1d5f-f50d-4e23-9aca-15af3ad28fc9/1741331720632_zmvie59ynpr_ocean_trash.jpg",
+        "https://qdtfpohyfsqvunddzoge.supabase.co/storage/v1/object/public/reports/b1bb2e01-7757-4a13-9e41-32672aeb36af/1741137616568_qczw902m1p_ocean_trash.jpg",
       status: ReportStatus.WAITING,
-      userId: "a08e1d5f-f50d-4e23-9aca-15af3ad28fc9",
+      userId: "b1bb2e01-7757-4a13-9e41-32672aeb36af",
     },
     {
       title: "Ocean Trash",
       location: "Trenggalek, East Java",
       description: "Ocean Trash Trash Trash",
       media:
-        "https://qdtfpohyfsqvunddzoge.supabase.co/storage/v1/object/public/reports/a08e1d5f-f50d-4e23-9aca-15af3ad28fc9/1741331720632_zmvie59ynpr_ocean_trash.jpg",
+        "https://qdtfpohyfsqvunddzoge.supabase.co/storage/v1/object/public/reports/b1bb2e01-7757-4a13-9e41-32672aeb36af/1741137616568_qczw902m1p_ocean_trash.jpg",
       status: ReportStatus.VERIFIED,
-      userId: "a08e1d5f-f50d-4e23-9aca-15af3ad28fc9",
+      userId: "b1bb2e01-7757-4a13-9e41-32672aeb36af",
     },
     {
       title: "Ocean Trash",
       location: "Trenggalek, East Java",
       description: "Ocean Trash Trash Trash",
       media:
-        "https://qdtfpohyfsqvunddzoge.supabase.co/storage/v1/object/public/reports/a08e1d5f-f50d-4e23-9aca-15af3ad28fc9/1741331720632_zmvie59ynpr_ocean_trash.jpg",
+        "https://qdtfpohyfsqvunddzoge.supabase.co/storage/v1/object/public/reports/b1bb2e01-7757-4a13-9e41-32672aeb36af/1741137616568_qczw902m1p_ocean_trash.jpg",
       status: ReportStatus.INVALID,
-      userId: "a08e1d5f-f50d-4e23-9aca-15af3ad28fc9",
+      userId: "b1bb2e01-7757-4a13-9e41-32672aeb36af",
     },
     {
       title: "Ocean Trash",
       location: "Trenggalek, East Java",
       description: "Ocean Trash Trash Trash",
       media:
-        "https://qdtfpohyfsqvunddzoge.supabase.co/storage/v1/object/public/reports/a08e1d5f-f50d-4e23-9aca-15af3ad28fc9/1741331720632_zmvie59ynpr_ocean_trash.jpg",
+        "https://qdtfpohyfsqvunddzoge.supabase.co/storage/v1/object/public/reports/b1bb2e01-7757-4a13-9e41-32672aeb36af/1741137616568_qczw902m1p_ocean_trash.jpg",
       status: ReportStatus.RESOLVED,
-      userId: "a08e1d5f-f50d-4e23-9aca-15af3ad28fc9",
+      userId: "b1bb2e01-7757-4a13-9e41-32672aeb36af",
     },
   ];
 
