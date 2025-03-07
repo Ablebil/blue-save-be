@@ -26,7 +26,7 @@ export const sendOTPEmail = async (email: string, otp: string) => {
 };
 
 export const sendResetLink = async (email: string, resetToken: string) => {
-  const resetLink = `https://nautikara.vercel.app/reset-password?resetToken=${resetToken}`;
+  const resetLink = `https://nautikara.vercel.app/reset-password/${resetToken}`;
 
   const mailOptions = {
     from: process.env.EMAIL_USER,
