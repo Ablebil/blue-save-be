@@ -123,7 +123,7 @@ export const forgotPasswordValidation = checkSchema({
 
 export const resetPasswordValidation = checkSchema({
   resetToken: {
-    in: ["query"],
+    in: ["params"],
     isString: {
       errorMessage: "Reset token must be a string",
     },

@@ -86,7 +86,7 @@ router.post(
 );
 
 router.post(
-  "/reset-password",
+  "/reset-password/:resetToken",
   // passwordResetLimiter,
   resetPasswordValidation,
   validationResultHandler,
