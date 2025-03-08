@@ -13,7 +13,9 @@ import { formatDateWithoutYear } from "../utils/date";
 
 export const createNewReport = async (
   title: string,
-  location: string,
+  street: string,
+  province: string,
+  country: string,
   description: string,
   file: Express.Multer.File,
   userId: string
@@ -49,7 +51,9 @@ export const createNewReport = async (
 
   const report = await createReport({
     title,
-    location,
+    street,
+    province,
+    country,
     description,
     media: mediaUrl,
     userId,

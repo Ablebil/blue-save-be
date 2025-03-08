@@ -14,17 +14,43 @@ export const createReportValidation = checkSchema({
       errorMessage: "Title must be at least 5 characters long",
     },
   },
-  location: {
+  street: {
     in: ["body"],
     isString: {
-      errorMessage: "Location must be a string",
+      errorMessage: "Street must be a string",
     },
     notEmpty: {
-      errorMessage: "Location is required",
+      errorMessage: "Street is required",
     },
     isLength: {
       options: { min: 5 },
-      errorMessage: "Location must be at least 5 characters long",
+      errorMessage: "Street must be at least 5 characters long",
+    },
+  },
+  province: {
+    in: ["body"],
+    isString: {
+      errorMessage: "Province must be a string",
+    },
+    notEmpty: {
+      errorMessage: "Province is required",
+    },
+    isLength: {
+      options: { min: 5 },
+      errorMessage: "Province must be at least 5 characters long",
+    },
+  },
+  country: {
+    in: ["body"],
+    isString: {
+      errorMessage: "Country must be a string",
+    },
+    notEmpty: {
+      errorMessage: "Country is required",
+    },
+    isLength: {
+      options: { min: 5 },
+      errorMessage: "Country must be at least 5 characters long",
     },
   },
   description: {

@@ -37,7 +37,9 @@ model RefreshToken {
 model Report {
   id          String       @id @default(uuid()) @db.Uuid
   title       String       @db.VarChar(255)
-  location    String       @db.VarChar(255)
+  street      String       @db.VarChar(255)
+  province    String       @db.VarChar(255)
+  country     String       @db.VarChar(255)
   description String       @db.Text
   media       String       @db.VarChar(255)
   status      ReportStatus @default(WAITING)

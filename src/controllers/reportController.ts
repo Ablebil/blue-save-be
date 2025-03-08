@@ -13,13 +13,15 @@ export const createReport = async (
   next: NextFunction
 ) => {
   try {
-    const { title, location, description } = matchedData(req);
+    const { title, street, province, country, description } = matchedData(req);
     const file = req.file;
     const userId = (req as any).user.id;
 
     const report = await createNewReport(
       title,
-      location,
+      street,
+      province,
+      country,
       description,
       file!,
       userId
