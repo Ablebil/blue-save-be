@@ -10,7 +10,6 @@ export const handleWebhook = async (req: Request, res: Response) => {
       await createDonation({
         orderId: payload.order_id,
         amount: parseFloat(payload.gross_amount),
-        phone: payload.customer_details.phone,
         userId: payload.custom_field1,
       });
     }
