@@ -15,10 +15,8 @@ export const createTransaction = async (
         order_id: orderId,
         gross_amount: amount,
       },
-      customer_details: {
-        ...customerDetails,
-        custom_field1: userId,
-      },
+      customer_details: customerDetails,
+      custom_field1: userId,
     };
 
     const transaction = await snap.createTransaction(parameter);
