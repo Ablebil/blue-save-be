@@ -26,7 +26,7 @@ export const sendOTPEmail = async (email: string, otp: string) => {
 };
 
 export const sendResetLink = async (email: string, resetToken: string) => {
-  const resetLink = `${process.env.RESET_PASSWORD_URL}/${resetToken}`;
+  const resetLink = `${process.env.RESET_PASSWORD_URL!}/${resetToken}`;
 
   const mailOptions = {
     from: process.env.EMAIL_USER,
