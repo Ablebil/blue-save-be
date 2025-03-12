@@ -23,6 +23,7 @@ model User {
   updatedAt           DateTime       @updatedAt
   refreshTokens       RefreshToken[]
   reports             Report[]
+  donations           Donation[]
 }
 
 model RefreshToken {
@@ -46,6 +47,17 @@ model Report {
   userId      String       @db.Uuid
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Donation {
+  id        String   @id @default(cuid())
+  orderId   String   @db.VarChar(255)
+  amount    Decimal  @db.Decimal(10, 2)
+  phone     String   @db.VarChar(25)
+  userId    String   @db.Uuid
+  createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

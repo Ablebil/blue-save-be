@@ -8,7 +8,7 @@
     "build": "tsc"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node prisma/seeders/reportSeeder.ts"
   },
   "keywords": [],
   "author": "Ablebil",
@@ -48,6 +48,7 @@
     "express-validator": "^7.2.1",
     "helmet": "^8.0.0",
     "jsonwebtoken": "^9.0.2",
+    "midtrans-client": "^1.4.2",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "node-cron": "^3.0.3",

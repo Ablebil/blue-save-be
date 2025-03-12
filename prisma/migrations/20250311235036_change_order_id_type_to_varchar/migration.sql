@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Donation" ALTER COLUMN "orderId" SET DATA TYPE VARCHAR(255);
