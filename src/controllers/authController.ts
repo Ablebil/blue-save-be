@@ -83,7 +83,10 @@ export const googleAuthCallback = async (
 
     res.status(200).json({
       message: "Google login successful",
-      user,
+      user: {
+        name: user.name,
+        email: user.email,
+      },
       accessToken,
       refreshToken,
     });
