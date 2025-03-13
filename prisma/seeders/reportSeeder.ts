@@ -12,9 +12,9 @@ async function main() {
       country: "Indonesia",
       description: "Ocean Trash Trash Trash",
       media:
-        "https://qdtfpohyfsqvunddzoge.supabase.co/storage/v1/object/public/reports/a08e1d5f-f50d-4e23-9aca-15af3ad28fc9/1741420519260_7a6112227td_ocean_trash.jpg",
+        "https://qdtfpohyfsqvunddzoge.supabase.co/storage/v1/object/public/media/reports/8a01f8cb-3598-469b-9c70-cc68b4d75c11/1741855541586_u49lafq81ml_ocean_trash.jpg",
       status: ReportStatus.WAITING,
-      userId: "a08e1d5f-f50d-4e23-9aca-15af3ad28fc9",
+      userId: "8a01f8cb-3598-469b-9c70-cc68b4d75c11",
     },
     {
       title: "Ocean Trash",
@@ -23,9 +23,9 @@ async function main() {
       country: "Indonesia",
       description: "Ocean Trash Trash Trash",
       media:
-        "https://qdtfpohyfsqvunddzoge.supabase.co/storage/v1/object/public/reports/a08e1d5f-f50d-4e23-9aca-15af3ad28fc9/1741420519260_7a6112227td_ocean_trash.jpg",
+        "https://qdtfpohyfsqvunddzoge.supabase.co/storage/v1/object/public/media/reports/8a01f8cb-3598-469b-9c70-cc68b4d75c11/1741855541586_u49lafq81ml_ocean_trash.jpg",
       status: ReportStatus.VERIFIED,
-      userId: "a08e1d5f-f50d-4e23-9aca-15af3ad28fc9",
+      userId: "8a01f8cb-3598-469b-9c70-cc68b4d75c11",
     },
     {
       title: "Ocean Trash",
@@ -34,9 +34,9 @@ async function main() {
       country: "Indonesia",
       description: "Ocean Trash Trash Trash",
       media:
-        "https://qdtfpohyfsqvunddzoge.supabase.co/storage/v1/object/public/reports/a08e1d5f-f50d-4e23-9aca-15af3ad28fc9/1741420519260_7a6112227td_ocean_trash.jpg",
+        "https://qdtfpohyfsqvunddzoge.supabase.co/storage/v1/object/public/media/reports/8a01f8cb-3598-469b-9c70-cc68b4d75c11/1741855541586_u49lafq81ml_ocean_trash.jpg",
       status: ReportStatus.INVALID,
-      userId: "a08e1d5f-f50d-4e23-9aca-15af3ad28fc9",
+      userId: "8a01f8cb-3598-469b-9c70-cc68b4d75c11",
     },
     {
       title: "Ocean Trash",
@@ -45,9 +45,9 @@ async function main() {
       country: "Indonesia",
       description: "Ocean Trash Trash Trash",
       media:
-        "https://qdtfpohyfsqvunddzoge.supabase.co/storage/v1/object/public/reports/a08e1d5f-f50d-4e23-9aca-15af3ad28fc9/1741420519260_7a6112227td_ocean_trash.jpg",
+        "https://qdtfpohyfsqvunddzoge.supabase.co/storage/v1/object/public/media/reports/8a01f8cb-3598-469b-9c70-cc68b4d75c11/1741855541586_u49lafq81ml_ocean_trash.jpg",
       status: ReportStatus.RESOLVED,
-      userId: "a08e1d5f-f50d-4e23-9aca-15af3ad28fc9",
+      userId: "8a01f8cb-3598-469b-9c70-cc68b4d75c11",
     },
   ];
 
