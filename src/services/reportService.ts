@@ -27,11 +27,11 @@ export const createNewReport = async (
   const fileStream = Readable.from(file.buffer);
 
   const { data, error } = await supabase.storage
-    .from("reports")
+    .from("media")
     .upload(
-      `${userId}/${Date.now()}_${Math.random().toString(36).substring(2)}_${
-        file.originalname
-      }`,
+      `reports/${userId}/${Date.now()}_${Math.random()
+        .toString(36)
+        .substring(2)}_${file.originalname}`,
       fileStream,
       {
         cacheControl: "3600",
@@ -46,7 +46,7 @@ export const createNewReport = async (
   }
 
   const mediaUrl = `${
-    supabase.storage.from("reports").getPublicUrl(data.path).data.publicUrl
+    supabase.storage.from("media").getPublicUrl(data.path).data.publicUrl
   }`;
 
   const report = await createReport({
