@@ -21,8 +21,7 @@ export const createTransaction = async (
 
     const transaction = await snap.createTransaction(parameter);
     return transaction;
-  } catch (err) {
-    console.log(err);
+  } catch {
     throw new HttpError("Failed to create payment", 500);
   }
 };

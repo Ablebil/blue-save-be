@@ -15,8 +15,7 @@ export const handleWebhook = async (req: Request, res: Response) => {
     }
 
     res.status(200).send("OK");
-  } catch (err) {
-    console.log(err);
+  } catch {
     throw new HttpError("Error handling webhook", 500);
   }
 };
