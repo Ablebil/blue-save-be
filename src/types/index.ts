@@ -9,3 +9,10 @@ export enum ReportStatus {
   INVALID = "INVALID",
   RESOLVED = "RESOLVED",
 }
+
+export enum Category {
+  ENVIRONMENT = "ENVIRONMENT",
+  CONSERVATION = "CONSERVATION",
+  EDUCATION = "EDUCATION",
+  RESEARCH = "RESEARCH",
+}

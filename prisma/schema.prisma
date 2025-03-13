@@ -61,6 +61,18 @@ model Donation {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model News {
+  id          String   @id @default(uuid())
+  image       String   @db.VarChar(255)
+  title       String   @db.VarChar(255)
+  description String   @db.VarChar(255)
+  author      String   @db.VarChar(255)
+  content     String   @db.Text
+  category    Category
+
+  createdAt DateTime @default(now())
+}
+
 enum Role {
   USER
   ADMIN
@@ -71,4 +83,11 @@ enum ReportStatus {
   VERIFIED
   INVALID
   RESOLVED
+}
+
+enum Category {
+  ENVIRONMENT
+  CONSERVATION
+  EDUCATION
+  RESEARCH
 }
