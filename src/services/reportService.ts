@@ -2,13 +2,9 @@ import { supabase } from "../config/supabase";
 import { Readable } from "stream";
 import {
   createReport,
-  findReportById,
-  updateStatus,
-  findAllReports,
   findReportsByUserId,
 } from "../repositories/reportRepository";
 import HttpError from "../utils/HttpError";
-import { ReportStatus } from "../types";
 import { formatDateWithoutYear } from "../utils/date";
 
 export const createNewReport = async (
@@ -63,26 +59,6 @@ export const createNewReport = async (
     ...report,
     createdAt: formatDateWithoutYear(new Date(report.createdAt)),
   };
-};
-
-export const updateExistingReportStatus = async (
-  reportId: string,
-  status: ReportStatus
-) => {
-  const report = await findReportById(reportId);
-  if (!report) {
-    throw new HttpError("Report not found", 404);
-  }
-
-  return await updateStatus(reportId, status);
-};
-
-export const fetchAllReports = async () => {
-  const reports = await findAllReports();
-  return reports.map((report: any) => ({
-    ...report,
-    createdAt: formatDateWithoutYear(new Date(report.createdAt)),
-  }));
 };
 
 export const fetchReportsByUserId = async (userId: string) => {
