@@ -9,9 +9,15 @@ export const getAllNews = async (
 ) => {
   try {
     const { page = 1, limit = 10 } = matchedData(req);
-    const news = await fetchAllNews(page, limit);
 
-    res.status(200).json(news);
+    const { news, totalNews } = await fetchAllNews(page, limit);
+
+    res.status(200).json({
+      news,
+      totalNews,
+      currentPage: page,
+      totalPage: Math.ceil(totalNews / limit),
+    });
   } catch (err) {
     next(err);
   }

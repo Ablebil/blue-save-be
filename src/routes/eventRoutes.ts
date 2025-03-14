@@ -4,7 +4,7 @@ import {
   getAllEvents,
   getEventById,
   registerForEvent,
-} from "../controllers/evenController";
+} from "../controllers/eventController";
 import {
   getAllEventsValidator,
   getEventAndRegisterEventValidator,
