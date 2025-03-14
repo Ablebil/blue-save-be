@@ -58,7 +58,7 @@ export const authenticateGoogleUser = async (profile: any) => {
 
   return {
     user,
-    accessToken: generateAccessToken(user!.id),
+    accessToken: generateAccessToken(user!.id, user!.name, user!.email),
     refreshToken,
   };
 };
@@ -131,7 +131,7 @@ export const verifyOTP = async (email: string, otp: string) => {
   );
 
   return {
-    accessToken: generateAccessToken(user.id),
+    accessToken: generateAccessToken(user.id, user.name, user.email),
     refreshToken,
   };
 };
@@ -156,7 +156,7 @@ export const loginUser = async (
   await addRefreshToken(user.id, refreshToken);
 
   return {
-    accessToken: generateAccessToken(user.id),
+    accessToken: generateAccessToken(user.id, user.name, user.email),
     refreshToken,
   };
 };
@@ -174,7 +174,7 @@ export const refreshAccessToken = async (refreshToken: string) => {
     await addRefreshToken(user.id, newRefreshToken);
 
     return {
-      accessToken: generateAccessToken(user.id),
+      accessToken: generateAccessToken(user.id, user.name, user.email),
       refreshToken: newRefreshToken,
     };
   } catch (err) {
