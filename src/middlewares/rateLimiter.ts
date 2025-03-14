@@ -50,6 +50,16 @@ export const passwordResetLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+export const eventRegisterLimiter = rateLimit({
+  windowMs: 30 * 60 * 1000,
+  max: 5,
+  message: {
+    error: "Too many event registration attempts. Please try again later.",
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 export const globalLimiter = rateLimit({
   windowMs: 1 * 60 * 1000,
   max: 200,

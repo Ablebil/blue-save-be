@@ -10,6 +10,7 @@ import {
   getEventAndRegisterEventValidator,
 } from "../validators/eventValidator";
 import { validationResultHandler } from "../middlewares/validationResultHandler";
+import { eventRegisterLimiter } from "../middlewares/rateLimiter";
 
 const router = Router();
 
@@ -32,6 +33,7 @@ router.get(
 router.post(
   "/register/:eventId",
   passport.authenticate("jwt", { session: false }),
+  eventRegisterLimiter,
   getEventAndRegisterEventValidator,
   validationResultHandler,
   registerForEvent
