@@ -7,7 +7,6 @@ import {
   logoutUser,
   requestPasswordReset,
   resetPassword,
-  deleteUserByEmail,
 } from "../services/authService";
 import { matchedData } from "express-validator/lib";
 
@@ -150,20 +149,6 @@ export const resetPasswordHandler = async (
     const { resetToken, newPassword } = matchedData(req);
     await resetPassword(resetToken, newPassword);
     res.status(200).json({ message: "Password has been updated successfully" });
-  } catch (err) {
-    next(err);
-  }
-};
-
-export const deleteUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const { email } = (req as any).body;
-    await deleteUserByEmail(email);
-    res.status(200).json({ message: "User deleted successfuly" });
   } catch (err) {
     next(err);
   }

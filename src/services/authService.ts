@@ -11,7 +11,6 @@ import {
   getUserRefreshTokens,
   findUserByGoogleId,
   findUserByResetToken,
-  deleteUser,
 } from "../repositories/authRepository";
 import {
   generateAccessToken,
@@ -224,8 +223,4 @@ export const resetPassword = async (
     { id: user.id },
     { password: hashedPassword, resetToken: null, resetTokenExpiresAt: null }
   );
-};
-
-export const deleteUserByEmail = async (email: string) => {
-  return await deleteUser(email);
 };

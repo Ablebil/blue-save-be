@@ -9,7 +9,6 @@ import {
   logout,
   forgotPassword,
   resetPasswordHandler,
-  deleteUser,
 } from "../controllers/authController";
 import {
   registerValidation,
