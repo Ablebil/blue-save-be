@@ -36,8 +36,8 @@ export const createReportValidation = checkSchema({
       errorMessage: "Province is required",
     },
     isLength: {
-      options: { min: 5 },
-      errorMessage: "Province must be at least 5 characters long",
+      options: { min: 3 },
+      errorMessage: "Province must be at least 3 characters long",
     },
   },
   country: {
