@@ -79,17 +79,14 @@ export const googleAuthCallback = async (
       return;
     }
 
-    const { user, accessToken, refreshToken } = req.user as any;
+    const { accessToken, refreshToken } = req.user as any;
+    const redirectUrl = process.env.REDIRECT_URL;
 
-    res.status(200).json({
-      message: "Google login successful",
-      user: {
-        name: user.name,
-        email: user.email,
-      },
-      accessToken,
-      refreshToken,
-    });
+    const fullRedirectUrl = `${redirectUrl}?accessToken=${encodeURIComponent(
+      accessToken
+    )}&refreshToken=${encodeURIComponent(refreshToken)}`;
+
+    res.redirect(fullRedirectUrl);
   } catch (err) {
     next(err);
   }
