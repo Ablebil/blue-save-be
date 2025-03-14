@@ -8,22 +8,23 @@ datasource db {
 }
 
 model User {
-  id                  String         @id @default(uuid()) @db.Uuid
-  email               String         @unique @db.VarChar(320)
-  password            String?        @db.VarChar(255)
-  name                String         @db.VarChar(50)
-  googleId            String?        @unique @db.VarChar(255)
-  otp                 String?        @db.Char(6)
+  id                  String              @id @default(uuid()) @db.Uuid
+  email               String              @unique @db.VarChar(320)
+  password            String?             @db.VarChar(255)
+  name                String              @db.VarChar(50)
+  googleId            String?             @unique @db.VarChar(255)
+  otp                 String?             @db.Char(6)
   otpExpiresAt        DateTime?
-  role                Role           @default(USER)
-  verified            Boolean        @default(false)
-  resetToken          String?        @db.VarChar(255)
+  role                Role                @default(USER)
+  verified            Boolean             @default(false)
+  resetToken          String?             @db.VarChar(255)
   resetTokenExpiresAt DateTime?
-  createdAt           DateTime       @default(now())
-  updatedAt           DateTime       @updatedAt
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
   refreshTokens       RefreshToken[]
   reports             Report[]
   donations           Donation[]
+  registrations       EventRegistration[]
 }
 
 model RefreshToken {
@@ -62,15 +63,35 @@ model Donation {
 }
 
 model News {
-  id          String   @id @default(uuid())
+  id          String   @id @default(uuid()) @db.Uuid
   image       String   @db.VarChar(255)
   title       String   @db.VarChar(255)
   description String   @db.VarChar(255)
   author      String   @db.VarChar(255)
   content     String   @db.Text
   category    Category
+  createdAt   DateTime @default(now())
+}
 
+model Event {
+  id            String              @id @default(uuid()) @db.Uuid
+  image         String              @db.VarChar(255)
+  title         String              @db.VarChar(255)
+  description   String              @db.Text
+  date          String              @db.VarChar(50)
+  location      String              @db.VarChar(255)
+  createdAt     DateTime            @default(now())
+  registrations EventRegistration[]
+}
+
+model EventRegistration {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  eventId   String   @db.Uuid
   createdAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
 }
 
 enum Role {
